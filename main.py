@@ -102,6 +102,6 @@ if __name__ == "__main__":
         from_group = 1
         post_photo(from_group, attachments, message, group_id, access_token)
     except requests.exceptions.HTTPError:
-        logging.exception('Ошибка в запросе к "vk.com" или "kxcd.com" ')
+        logging.exception('Ошибка в запросе к "vk.com" или "xkcd.com" ')
     finally:
         os.remove('comics.jpg')
