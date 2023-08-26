@@ -80,7 +80,6 @@ def post_photo(from_group, attachments, message, group_id, access_token):
     url = 'https://api.vk.com/method/wall.post'
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    print(response.json())
     return response.json()
 
 
