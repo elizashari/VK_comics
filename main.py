@@ -5,6 +5,11 @@ import random
 import logging
 
 
+def check_vk_error(response):
+    if response.get('error'):
+        raise requests.exceptions.HTTPError
+
+
 def download_image(file_path, url):
     response = requests.get(url)
     response.raise_for_status()
@@ -38,6 +43,7 @@ def get_upload_url(access_token, group_id):
     url = 'https://api.vk.com/method/photos.getWallUploadServer'
     response = requests.get(url, params=payload)
     response.raise_for_status()
+    check_vk_error(response.json())
     return response.json()['response']['upload_url']
 
 
@@ -48,6 +54,7 @@ def upload_photo(upload_url):
             }
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
+        check_vk_error(response.json())
         os.remove('comics.jpg')
         return response.json()
 
@@ -65,6 +72,7 @@ def save_wall_photo(photo_server, photo, photo_hash, group_id, access_token):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     response = requests.post(url, params=payload)
     response.raise_for_status()
+    check_vk_error(response.json())
     return response.json()
 
 
@@ -80,6 +88,7 @@ def post_photo(from_group, attachments, message, group_id, access_token):
     url = 'https://api.vk.com/method/wall.post'
     response = requests.post(url, params=payload)
     response.raise_for_status()
+    check_vk_error(response.json())
     return response.json()
 
 
