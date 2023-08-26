@@ -48,6 +48,7 @@ def upload_photo(upload_url):
             }
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
+        os.remove('comics.jpg')
         return response.json()
 
 
@@ -103,5 +104,4 @@ if __name__ == "__main__":
         post_photo(from_group, attachments, message, group_id, access_token)
     except requests.exceptions.HTTPError:
         logging.exception('Ошибка в запросе к "vk.com" или "kxcd.com" ')
-    finally:
-        os.remove('comics.jpg')
+
