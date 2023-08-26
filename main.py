@@ -12,20 +12,20 @@ def download_image(file_path, url):
         file.write(response.content)
 
 
-def download_comics():
+def download_comic():
     url = 'https://xkcd.com/info.0.json'
     file_path = 'comics.jpg'
     response = requests.get(url)
     response.raise_for_status()
     number_of_comics = response.json()['num']
     random_number = random.randint(1, number_of_comics)
-    comics_url = f'https://xkcd.com/{random_number}/info.0.json'
-    comics_response = requests.get(comics_url)
-    comics_response.raise_for_status()
-    comments = comics_response.json()['alt']
-    url_for_downloading = comics_response.json()['img']
-    download_image(file_path, url_for_downloading)
-    return comments
+    comic_url = f'https://xkcd.com/{random_number}/info.0.json'
+    comic_response = requests.get(comic_url)
+    comic_response.raise_for_status()
+    comment = comic_response.json()['alt']
+    url_of_comic = comic_response.json()['img']
+    download_image(file_path, url_of_comic)
+    return comment
 
 
 def get_upload_url(access_token, group_id):
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     group_id = os.environ['ID_GROUP']
     access_token = os.environ['VK_TOKEN']
     try:
-        message = download_comics()
+        message = download_comic()
         upload_url = get_upload_url(access_token, group_id)
         response = upload_photo(upload_url)
         v = 5.131
