@@ -29,8 +29,8 @@ def download_comic():
     comic_response.raise_for_status()
     response = comic_response.json()
     comment = response['alt']
-    url_of_comic = response['img']
-    download_image(file_path, url_of_comic)
+    comic_url = response['img']
+    download_image(file_path, comic_url)
     return comment
 
 
@@ -42,10 +42,11 @@ def get_upload_url(access_token, group_id):
         'group_id': group_id
     }
     url = 'https://api.vk.com/method/photos.getWallUploadServer'
-    response = requests.get(url, params=payload)
-    response.raise_for_status()
-    check_vk_error(response.json())
-    return response.json()['response']['upload_url']
+    upload_url_response = requests.get(url, params=payload)
+    upload_url_response.raise_for_status()
+    response = upload_url_response.json()
+    check_vk_error(response)
+    return response['response']['upload_url']
 
 
 def upload_photo(upload_url):
@@ -53,10 +54,11 @@ def upload_photo(upload_url):
         files = {
             'photo': file,
             }
-        response = requests.post(upload_url, files=files)
-        response.raise_for_status()
-        check_vk_error(response.json())
-        return response.json()
+        upload_photo_response = requests.post(upload_url, files=files)
+    upload_photo_response.raise_for_status()
+    response = upload_photo_response.json()
+    check_vk_error(response)
+    return response
 
 
 def save_wall_photo(photo_server, photo, photo_hash, group_id, access_token):
@@ -70,10 +72,11 @@ def save_wall_photo(photo_server, photo, photo_hash, group_id, access_token):
     }
 
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
-    response = requests.post(url, params=payload)
-    response.raise_for_status()
-    check_vk_error(response.json())
-    return response.json()
+    save_wall_photo_response = requests.post(url, params=payload)
+    save_wall_photo_response.raise_for_status()
+    response = save_wall_photo_response.json()
+    check_vk_error(response)
+    return response
 
 
 def post_photo(from_group, attachments, message, group_id, access_token):
@@ -86,10 +89,11 @@ def post_photo(from_group, attachments, message, group_id, access_token):
         'access_token': access_token
         }
     url = 'https://api.vk.com/method/wall.post'
-    response = requests.post(url, params=payload)
-    response.raise_for_status()
-    check_vk_error(response.json())
-    return response.json()
+    post_photo_response = requests.post(url, params=payload)
+    post_photo_response.raise_for_status()
+    response = post_photo_response.json()
+    check_vk_error(response)
+    return response
 
 
 if __name__ == "__main__":
